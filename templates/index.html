@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SHIELD</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+    <link rel="icon" href="https://shield.ldkerns.com/wp/wp-content/uploads/2023/03/Shield-Icon1-1-v2-90y.png" type="image/png" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #page-wrapper {
+            height: 100%;
+            overflow: auto;
+        }
+
+        #page-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        #page-wrapper {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        /* Media query to hide sign-in/logout button on mobile view */
+        @media (max-width: 768px) {
+            #sign-in,
+            #logout-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="landing">
+    <div id="page-wrapper">
+        <!-- Header -->
+        <header id="header">
+            <h1><img src="https://ldkerns.com/wp/wp-content/uploads/2016/09/ldk_fullColorLogo-med.png" alt="LDKerns Logo" style="width: 150px; height: auto; margin-top: 10px;"/></h1>
+            <nav id="nav">
+                <ul>
+                    {% if current_user.is_authenticated %}
+                        <li id="welcome-message">Welcome {{ current_user.first_name }} {{ current_user.last_name }}</li>
+                        <li>
+                            <form method="POST" action="{{ url_for('logout') }}">
+                                {{ form.hidden_tag() }}
+                                <button style="padding: 0 1em" type="submit" class="button logout-button">LOG OUT</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li id="sign-in"><a href="#" class="button signup-button" onclick="openModal()">SIGN IN</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Banner -->
+        <section id="banner">
+            <img src="https://shield.ldkerns.com/wp/wp-content/uploads/2023/04/Shield-Icon-BW-1-0-768x700.png" alt="Shield Icon" style="width: 100%; height: 100%; max-width: 420px;" />
+            <p>Click to review the SHIELD categories. <br>Presiona para revisar las categorías de SHIELD.</p>
+            <ul class="actions special">
+                <li><a href="{{ url_for('contact') }}" class="button primary" onclick="checkLoginStatusAndVote(event)"> Vote / Votar</a></li>
+                <li><a href="#" class="button" onclick="scrollToSection()"> SHIELD </a></li>
+            </ul>
+        </section>
+
+        <!-- Main -->
+        <section id="main" class="container">
+            <section class="box special">
+                <header class="major">
+                    <h2>Review the SHIELD categories</h2>
+                    <p style="white-space: pre-line;">
+                        Please take a moment to remind yourself what it means to be an LD Kerns/Maska employee.
+                        
+                        Tómese un momento para recordar lo que significa ser empleado de LD Kerns o Maska Builders.
+                    </p>
+                </header>
+            </section>
+
+            <section class="box special features">
+                <div class="features-row">
+                    <section>
+                        <i class="icon solid major fa-helmet-safety accent2"></i>
+                        <h3>Safety</h3>
+                        <p>SAFETY is first because safety IS first. Our number one priority is to provide for our safety and for the safety of others — whatever it takes.<br/><br/>La SEGURIDAD es lo primero porque la seguridad ES lo primero. Nuestra prioridad número uno es garantizar nuestra seguridad y la de los demás, sin importar lo que cueste.</p>
+                    </section>
+                    <section>
+                        <span class="icon solid major fa-scale-balanced accent3"></span>
+                        <h3>Honesty</h3>
+                        <br>
+                        <p>HONESTY is always the only policy. Without your word, you have nothing.<br/><br/>La HONESTIDAD es siempre la única política. Sin tu palabra, no tienes nada.</p>
+                    </section>
+                </div>
+                <div class="features-row">
+                    <section>
+                        <span class="icon solid major fa-user-shield accent4"></span>
+                        <h3>Integrity</h3>
+                        <p>INTEGRITY is having a moral compass that doesn’t waiver, literally having “wholeness” of character.<br/><br/>La INTEGRIDAD es tener una brújula moral que no vacila, literalmente tener una “totalidad” de carácter.</p>
+                    </section>
+                    <section>
+                        <span class="icon solid major fa-award accent5"></span>
+                        <h3>Excellence</h3>
+                        <p>EXCELLENCE is the result of always trying to improve. It is an attitude of always doing your best.<br/><br/>La EXCELENCIA es el resultado de siempre intentar mejorar. Es una actitud de siempre hacer lo mejor que puedas.</p>
+                    </section>
+                </div>
+                <div class="features-row">
+                    <section>
+                        <span class="icon solid major fa-people-group accent6"></span>
+                        <h3>Leadership</h3>
+                        <p>LEADERSHIP is about making others better as a result of your presence and making sure the impact lasts in your absence. Leadership is about taking responsibility, not making excuses.<br/><br/>El LIDERAZGO consiste en hacer que los demás sean mejores como resultado de tu presencia y asegurarte de que el impacto dure en tu ausencia. El liderazgo se trata de asumir responsabilidades, no de poner excusas.</p>
+                    </section>
+                    <section>
+                        <span class="icon solid major fa-handshake-simple accent7"></span>
+                        <h3>Dependability</h3>
+                        <br>
+                        <p>DEPENDABILITY means that we do what we said we would do, when we said we would do it and in the best way we can.<br/><br/>CONFIANZA significa que hacemos lo que dijimos que haríamos, cuando dijimos que lo haríamos y de la mejor manera posible.</p>
+                    </section>
+                </div>
+            </section>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <ul class="icons">
+                <li><a href="https://x.com/ldkerns_com" class="icon brands fa-twitter"><span class="label">Twitter"></span></a></li>
+                <li><a href="https://www.facebook.com/ldkerns/" class="icon brands fa-facebook-f"><span class="label">Facebook"></span></a></li>
+                <li><a href="https://www.instagram.com/ldkerns/?hl=en" class="icon brands fa-instagram"><span class="label">Instagram"></span></a></li>
+                <li><a href="https://ldkerns.com/" class="icon solid fa-globe"><span class="label">Website"></span></a></li>
+            </ul>
+            <ul class="copyright">
+                <li>L D Kerns Contractors &copy; 2024 | All rights reserved.</li>
+            </ul>
+        </footer>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <!-- Close button -->
+            <button class="close-button" onclick="closeModal()">×</button>
+            <form id="login-form" method="post" action="{{ url_for('login') }}">
+                {{ form.hidden_tag() }}
+                <div class="fields">
+                    <div class="field half">
+                        <label for="email">Email</label>
+                        {{ form.email() }}
+                    </div>
+                    <div class="field half">
+                        <label for="password">Password</label>
+                        {{ form.password() }}
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Sign In" class="button primary" /></li>
+                </ul>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.dropotron.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.scrollex.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+    <script src="https://kit.fontawesome.com/c4716ba345.js" crossorigin="anonymous"></script>
+
+    <script src="{{ url_for('static', filename    ='js/homepage.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vote.js') }}"></script>
+
+    <!-- Scroll-to-Top Button -->
+    <button id="scrollToTopBtn" class="scroll-to-top"><i class="fas fa-chevron-up"></i></button>
+
+    <!-- JavaScript for authentication -->
+    <script>
+        function openModal() {
+            document.body.classList.add('modal-active', 'modal-opening');
+            document.getElementById('modal-overlay').classList.add('active');
+            document.querySelector('.modal-content').classList.add('active');
+            setTimeout(() => {
+                document.body.classList.remove('modal-opening');
+            }, 500);
+        }
+
+        function closeModal() {
+            document.body.classList.add('modal-closing');
+            document.querySelector('.modal-content').classList.remove('active');
+            document.getElementById('modal-overlay').classList.remove('active');
+            setTimeout(() => {
+                document.body.classList.remove('modal-active', 'modal-closing');
+            }, 500);
+        }
+
+        document.getElementById('modal-overlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        function checkLoginStatusAndVote(event) {
+            event.preventDefault();
+            fetch('/session-status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.loggedIn) {
+                        window.location.href = '{{ url_for("contact") }}';
+                    } else {
+                        openModal();
+                    }
+                })
+                .catch(error => console.error('Error checking session status:', error));
+        }
+
+
+
+        function scrollToSection() {
+            const targetSection = document.querySelector('#main');
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    </script>
+</body>
+</html>
